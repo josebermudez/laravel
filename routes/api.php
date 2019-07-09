@@ -53,6 +53,18 @@ Route::group(['prefix' => 'admin', 'middleware' => 'api.auth'], function (){
         ]);
 
     });
+	
+	Route::group(['prefix' => 'products'], function (){
+
+        Route::get('/get',[
+            'as' => 'admin.products', 'uses' => 'Custom\ProductsController@allProducts'
+        ]);
+
+        Route::delete('/{id}',[
+            'as' => 'admin.products.delete', 'uses' => 'Custom\productsController@destroy'
+        ]);
+
+    });
 
 });
 

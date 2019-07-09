@@ -3,6 +3,21 @@
     <div class="sidebar-body scroll-pane">
       <div class="side-nav">
         <v-collapse accordion>
+		  
+		  <!-- Custom modules -->
+		  <v-collapse-item active-url="/admin/products">
+            <a slot="item-title" href="#">
+              <i class="icon-fa icon-fa-dashboard"/>{{ $t("administration") }}
+              <span class="icon-fa arrow icon-fa-fw"/>
+            </a>
+
+            <router-link to="/admin/products/all">
+			  {{ $t("products.products") }}
+            </router-link>
+
+          </v-collapse-item>
+		  <!-- End custom modules -->
+		  
           <v-collapse-item active-url="/admin/dashboard">
             <a slot="item-title" href="#">
               <i class="icon-fa icon-fa-dashboard"/>Dashboard

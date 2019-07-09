@@ -1,5 +1,29 @@
 {
   "_comment": "Spanish internationalization",
-  "hello"   : "Hola",
-  "basic": "Básico"
+  "hello": "Hola",
+  "basic": "Básico",
+  "general": {
+	"home": "Inicio",
+	"all": "Todos",
+	"labels": {
+		"registered_on": "Creado en",
+		"no_rows": "No se encontraron resultados",
+		"filter_place_holder": "Buscador" 
+	}
+  },
+  "products": {
+	"products": "Productos",
+	"actions": {
+		"new": "Nuevo producto",
+		"delete": "Borrar",
+		"edit": "Editar producto",
+		"view": "Ver"
+	},
+	"labels": {
+		"all": "Todos los productos",
+		"description": "Descripción",
+		"stock": "Cantidad",
+		"name": "Nombre"
+	}
+  }
 }

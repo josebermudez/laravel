@@ -77,6 +77,10 @@ import Settings from './views/admin/Settings.vue'
  | Other
  |--------------------------------------------------------------------------|
  */
+ 
+ // Custom
+ import Products from './views/admin/custom/Products.vue'
+ 
 
 // Auth
 import Login from './views/auth/Login.vue'
@@ -321,7 +325,13 @@ const routes = [
       {
         path: 'settings',
         component: Settings
-      }
+      },
+	  
+	  // Custom
+	  {
+		  path: 'products/all',
+		  component: Products
+	  }
     ]
   },
 
