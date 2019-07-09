@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import router from './router.js'
+import i18n from './i18n.js'
 import utils from './helpers/utilities'
 import ThemeSwitcher from './components/ThemeSwitcher'
 
@@ -18,7 +19,7 @@ Vue.prototype.$utils = utils
  */
 const app = new Vue({
   router,
-
+  i18n,
   // Theme Swiching Demo Component (You can remove it if not required)
   components: {
     ThemeSwitcher

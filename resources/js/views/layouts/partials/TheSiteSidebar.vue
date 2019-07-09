@@ -10,7 +10,7 @@
             </a>
 
             <router-link to="/admin/dashboard/basic">
-              Basic
+			  {{ $t("basic") }}
             </router-link>
 
             <router-link to="/admin/dashboard/ecommerce">
