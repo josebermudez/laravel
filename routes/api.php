@@ -54,6 +54,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'api.auth'], function (){
 
     });
 	
+	Route::resource('products', 'Custom\ProductsController');
+	
 	Route::group(['prefix' => 'products'], function (){
 
         Route::get('/get',[

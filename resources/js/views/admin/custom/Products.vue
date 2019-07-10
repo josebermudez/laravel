@@ -8,9 +8,11 @@
         <li class="breadcrumb-item active">{{ $t("general.all") }}</li>
       </ol>
       <div class="page-actions">
-        <a href="#" class="btn btn-primary">
-          <i class="icon-fa icon-fa-plus"/> {{ $t("products.actions.new") }}
-        </a>
+      
+		 <button class="btn btn-primary" @click="openCreateModal">
+			<i class="icon-fa icon-fa-plus"/> {{ $t("products.actions.new") }}
+		 </button>
+          
         <button class="btn btn-danger">
           <i class="icon-fa icon-fa-trash"/> {{ $t("products.actions.delete") }}
         </button>
@@ -26,11 +28,12 @@
           <div class="card-body">
             <table-component
               :data="getProducts"
-              sort-by="row.name"
+              sort-by="created_at"
               sort-order="desc"
               table-class="table"
 			  v-bind:filter-no-results="i18n.table.filterNoResults"
 			  v-bind:filter-placeholder="i18n.table.filterPlaceholder"
+			  ref="productTable"
             >
               <table-column show="name" v-bind:label="i18n.columns.name"/>
               <table-column show="description" v-bind:label="i18n.columns.description"/>
@@ -67,17 +70,20 @@
           </div>
         </div>
       </div>
+	  <create-modal ref="create"/>
     </div>
   </div>
 </template>
 
 <script type="text/babel">
 import { TableComponent, TableColumn } from 'vue-table-component'
+import CreateModal from './products/CreateModal'
 
 export default {
   components: {
     TableComponent,
-    TableColumn
+    TableColumn,
+	CreateModal
   },
   data () {
     return {
@@ -98,11 +104,22 @@ export default {
   methods: {
     async getProducts ({ page, filter, sort }) {
       try {
-        const response = await axios.get(`/api/admin/products/get?page=${page}`)
+	  
+		let data
+		
+        const response = await axios.get('/api/admin/products/get', { params: {page: page, filter:filter, sort:sort} })
+						.then((response) => {
+						
+							data = {
+								data: response.data.data,
+								pagination: {
+									currentPage: response.data.current_page,
+									totalPages: response.data.last_page
+								}
+							}	
+						})
+		return data
 
-        return {
-          data: response.data
-        }
       } catch (error) {
         if (error) {
           window.toastr['error']('There was an error', 'Error')
@@ -131,7 +148,10 @@ export default {
           window.toastr['error']('There was an error', 'Error')
         }
       }
-    }
+    },
+	openCreateModal () {
+		this.$refs.create.openModal()
+	}
   }
 }
 </script>
