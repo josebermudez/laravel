@@ -13,5 +13,6 @@ return [
     |
     */
 
-    'saved'             => 'Producto guardado correctamente'
+    'saved'             => 'Producto guardado correctamente',
+	'deleted'           => 'Producto eliminado correctamente'
 ];

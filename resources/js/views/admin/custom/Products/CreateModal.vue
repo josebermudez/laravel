@@ -147,31 +147,31 @@ export default {
       this.$refs.modal.close()
     },
 	async submit () {
-		console.log('Submit!')
 	  this.$v.$touch()
 	  if (this.$v.$invalid) {
 	    this.submitStatus = 'ERROR'
 	  } else {
 		this.submitStatus = 'PENDING'
-		
-		let vm = this
-		try {
-		
-			let response = await window.axios.post('/api/admin/products', vm.newProduct)
-			
-			this.submitStatus = 'OK'
-			
-			this.$parent.$refs.productTable.refresh();
-			
-			this.$refs.modal.close()
+		this.$parent.$refs.blockUi.loading = true
+		let self = this
 
-			window.toastr['success'](response.data.message, this.$t('general.success'))
-		} catch (error) {
-		  if (error) {
-		  console.log(error);
-		    window.toastr['error']('There was an error', 'Error')
-		  }
-		}
+		await window.axios.post('/api/admin/products', self.newProduct)
+			 .then(function (response){
+				self.submitStatus = 'OK'
+
+				self.$parent.$refs.productTable.refresh();
+
+				self.$refs.modal.close()
+				
+				window.toastr['success'](response.data.message, self.$t('general.success'))
+			 })
+			 .catch(function (error) {
+				window.toastr['error'](self.$t('general.error'), 'Error')
+				console.log(error)
+			 })
+			 .finally(function () {
+				self.$parent.$refs.blockUi.loading = false
+			 });
 	  }
 	}
   }

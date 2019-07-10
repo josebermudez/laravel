@@ -59,7 +59,7 @@
                       class="btn btn-default btn-sm"
                       data-delete
                       data-confirmation="notie"
-                      @click="deleteProduct(row.id)"
+                      @click="deleteProduct(row)"
                     >
                       <i class="icon-fa icon-fa-trash"/> {{ $t("products.actions.delete") }}
                     </a>
@@ -71,6 +71,8 @@
         </div>
       </div>
 	  <create-modal ref="create"/>
+	  <block-u-i ref="blockUi"/>
+	  
     </div>
   </div>
 </template>
@@ -78,12 +80,19 @@
 <script type="text/babel">
 import { TableComponent, TableColumn } from 'vue-table-component'
 import CreateModal from './products/CreateModal'
+import BlockUI from '../../../components/custom/BlockUI'
 
 export default {
   components: {
     TableComponent,
     TableColumn,
-	CreateModal
+	CreateModal,
+	BlockUI
+  },
+  mounted: function() {
+	var tableFilter = this.$el.querySelector('table-component__filter__field');
+	console.log(tableFilter);
+	
   },
   data () {
     return {
@@ -98,14 +107,19 @@ export default {
 			filterNoResults: this.$t('general.labels.no_rows'),
 			filterPlaceholder: this.$t('general.labels.filter_place_holder'),
 		}
-	  }
+	  },
+	  msg: 'Welcome to Your Vue.js App',
+	  sizeUnit: "px",
+	  color: "#bada55"
     }
   },
   methods: {
     async getProducts ({ page, filter, sort }) {
-      try {
-	  
+
 		let data
+		
+		this.$refs.blockUi.loading = true
+		let self = this
 		
         const response = await axios.get('/api/admin/products/get', { params: {page: page, filter:filter, sort:sort} })
 						.then((response) => {
@@ -114,40 +128,51 @@ export default {
 								data: response.data.data,
 								pagination: {
 									currentPage: response.data.current_page,
-									totalPages: response.data.last_page
+									totalPages: response.data.last_page,
+									count: response.data.count
 								}
 							}	
+						}).catch(function (error) {
+						  window.toastr['error'](self.$t('general.error'), 'Error')
+						  console.log(error)
+						})
+						.finally(function () {
+						  self.$refs.blockUi.loading = false
 						})
 		return data
-
-      } catch (error) {
-        if (error) {
-          window.toastr['error']('There was an error', 'Error')
-        }
-      }
     },
-    deleteProduct (id) {
+    deleteProduct (row) {
       let self = this
+
       window.notie.confirm({
-        text: i18n.t('greeting', { name: 'kazupon' }),
+        text: this.$t('general.labels.confirm', { name: row.name }),
         cancelCallback: function () {
           window.toastr['info']('Cancel')
         },
         submitCallback: function () {
-          self.deleteUserData(id)
-        }
+          self.deleteUserData(row.id)
+        },
+		submitText: this.$t('general.labels.yes'),
+		cancelText: this.$t('general.labels.cancel')
       })
     },
     async deleteUserData (id) {
-      try {
-        let response = await window.axios.delete('/api/admin/users/' + id)
-        this.users = response.data
-        window.toastr['success']('User Deleted', 'Success')
-      } catch (error) {
-        if (error) {
-          window.toastr['error']('There was an error', 'Error')
-        }
-      }
+	
+	  this.$refs.blockUi.loading = true
+	  let self = this
+	  
+      await window.axios.delete('/api/admin/products/' + id)
+			.then(function (response){
+			  self.$refs.productTable.refresh()
+			  window.toastr['success'](response.data.message, self.$t('general.success'))
+			})
+			.catch(function (error) {
+			  window.toastr['error'](self.$t('general.error'), 'Error')
+			  console.log(error)
+			})
+			.finally(function () {
+			  self.$refs.blockUi.loading = false
+			});
     },
 	openCreateModal () {
 		this.$refs.create.openModal()

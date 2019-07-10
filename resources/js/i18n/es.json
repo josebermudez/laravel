@@ -3,6 +3,7 @@
   "hello": "Hola",
   "basic": "Básico",
   "general": {
+	"error": "Ocurrió un error al intentar ejecutar su solicitud",
 	"home": "Inicio",
 	"all": "Todos",
 	"success": "Exito!",
@@ -14,10 +15,12 @@
 		"maxlength": "El valor debe tenener máximo {maxlength} caracteres.",
 		"minlength": "El valor debe tenener mínimo {minlength} caracteres.",
 		"cancel": "Cancelar",
+		"yes": "Si",
 		"save": "Guardar",
 		"required": "El campo es obligatorio.",
 		"please_fill_form": "Por favor diligiencie el formulario correctamente.",
-		"saving": "Guardando..."
+		"saving": "Guardando...",
+		"confirm": "Desea eliminar el registro: {name}?"
 	}
   },
   "products": {

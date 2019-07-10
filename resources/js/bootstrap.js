@@ -10,6 +10,8 @@ import VDropdownItem from './components/dropdown/VDropdownItem'
 import VDropdownDivider from './components/dropdown/VDropdownDivider'
 import VCollapse from './components/collapse/VCollapse'
 import VCollapseItem from './components/collapse/VCollapseItem'
+import BlockUI from 'vue-blockui'
+import { VueSpinners } from '@saeris/vue-spinners'
 
 /**
  * Global CSS imports
@@ -95,3 +97,8 @@ Vue.use(VuePrism)
 Vue.use(VTooltip)
 Vue.use(VeeValidate)
 Vue.use(Vuelidate)
+Vue.use(BlockUI)
+Vue.use(VueSpinners)
+
+
+

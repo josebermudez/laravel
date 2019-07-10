@@ -8,6 +8,7 @@ import i18n from './i18n.js'
 import utils from './helpers/utilities'
 import ThemeSwitcher from './components/ThemeSwitcher'
 
+
 require('./bootstrap')
 
 Vue.prototype.$utils = utils
