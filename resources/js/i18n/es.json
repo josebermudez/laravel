@@ -20,7 +20,9 @@
 		"required": "El campo es obligatorio.",
 		"please_fill_form": "Por favor diligiencie el formulario correctamente.",
 		"saving": "Guardando...",
-		"confirm": "Desea eliminar el registro: {name}?"
+		"confirm": "Desea eliminar el registro: {name}?",
+		"create": "Crear",
+		"delete": "Eliminar"
 	}
   },
   "products": {

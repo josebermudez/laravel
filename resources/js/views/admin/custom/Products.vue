@@ -1,23 +1,6 @@
 <template>
   <div class="main-content">
-    <div class="page-header">
-      <h3 class="page-title">{{ $t("products.products") }}</h3>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">{{ $t("general.home") }}</a></li>
-        <li class="breadcrumb-item"><a href="#">{{ $t("products.products") }}</a></li>
-        <li class="breadcrumb-item active">{{ $t("general.all") }}</li>
-      </ol>
-      <div class="page-actions">
-      
-		 <button class="btn btn-primary" @click="openCreateModal">
-			<i class="icon-fa icon-fa-plus"/> {{ $t("products.actions.new") }}
-		 </button>
-          
-        <button class="btn btn-danger">
-          <i class="icon-fa icon-fa-trash"/> {{ $t("products.actions.delete") }}
-        </button>
-      </div>
-    </div>
+    <crud-page-header :pageActions="pageActions" :principalTitle="principalTitle" :principalLevel="principalLevel" :secondaryLevel="secondaryLevel" ></crud-page-header>
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
@@ -36,7 +19,7 @@
 			  ref="productTable"
             >
               <table-column show="name" v-bind:label="i18n.columns.name"/>
-              <table-column show="description" v-bind:label="i18n.columns.description"/>
+              <table-column show="descriptionTruncate" v-bind:label="i18n.columns.description"/>
               <table-column show="stock" v-bind:label="i18n.columns.stock"/>
               <table-column
                 show="created_at"
@@ -50,11 +33,12 @@
               >
                 <template slot-scope="row">
                   <div class="table__actions">
-                    <router-link to="/admin/products/view">
-                      <a class="btn btn-default btn-sm">
-                        <i class="icon-fa icon-fa-search"/> {{ $t("products.actions.view") }}
-                      </a>
-                    </router-link>
+                    <a 
+					  class="btn btn-default btn-sm"
+					  @click="openViewModal(row)"
+					>
+                      <i class="icon-fa icon-fa-search"/> {{ $t("products.actions.view") }}
+                    </a>
                     <a
                       class="btn btn-default btn-sm"
                       data-delete
@@ -71,28 +55,29 @@
         </div>
       </div>
 	  <create-modal ref="create"/>
+	  <view-modal ref="view"/>
 	  <block-u-i ref="blockUi"/>
 	  
     </div>
   </div>
 </template>
 
+
 <script type="text/babel">
 import { TableComponent, TableColumn } from 'vue-table-component'
 import CreateModal from './products/CreateModal'
+import ViewModal from './products/ViewModal'
 import BlockUI from '../../../components/custom/BlockUI'
+import CrudPageHeader from './partials/CrudPageHeader'
 
 export default {
   components: {
     TableComponent,
     TableColumn,
 	CreateModal,
-	BlockUI
-  },
-  mounted: function() {
-	var tableFilter = this.$el.querySelector('table-component__filter__field');
-	console.log(tableFilter);
-	
+	ViewModal,
+	BlockUI,
+	CrudPageHeader
   },
   data () {
     return {
@@ -108,9 +93,12 @@ export default {
 			filterPlaceholder: this.$t('general.labels.filter_place_holder'),
 		}
 	  },
-	  msg: 'Welcome to Your Vue.js App',
-	  sizeUnit: "px",
-	  color: "#bada55"
+	  principalLevel: 'products.products',
+	  secondaryLevel: 'general.all',
+	  principalTitle: 'products.products',
+	  pageActions: {
+	    createLabel: 'products.actions.new'
+	  }
     }
   },
   methods: {
@@ -176,6 +164,9 @@ export default {
     },
 	openCreateModal () {
 		this.$refs.create.openModal()
+	},
+	openViewModal (row) {
+		this.$refs.view.openModal(row)
 	}
   }
 }

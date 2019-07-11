@@ -99,6 +99,7 @@ Vue.use(VeeValidate)
 Vue.use(Vuelidate)
 Vue.use(BlockUI)
 Vue.use(VueSpinners)
+Vue.use(require('vue-moment'));
 
 
 

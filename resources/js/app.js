@@ -6,6 +6,7 @@
 import router from './router.js'
 import i18n from './i18n.js'
 import utils from './helpers/utilities'
+import filters from './helpers/Filters.js'
 import ThemeSwitcher from './components/ThemeSwitcher'
 
 
